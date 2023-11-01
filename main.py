@@ -6,7 +6,9 @@ import requests
 import json
 
 load_dotenv()
-api_client = HubSpot(access_token=os.getenv('API_KEY'))
+ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
+API_URL = os.getenv('API_URL')
+api_client = HubSpot(access_token=ACCESS_TOKEN)
 
 def searchNewlyImportedContacts():
     public_object_search_request = PublicObjectSearchRequest(
@@ -52,13 +54,13 @@ def getAllContacts():
 def getAllProperties():
     try:
         headers = {
-            'Authorization': f'Bearer {os.getenv("API_KEY")}',
+            'Authorization': f'Bearer {ACCESS_TOKEN}',
             'Content-Type': 'application/json'
         }
 
         print(f'Headers: {headers}')
 
-        response = requests.get(url='https://api.hubapi.com/properties/v1/contacts/properties', headers=headers)
+        response = requests.get(url=f'{API_URL}/properties/v1/contacts/properties', headers=headers)
         jsonResponse = json.loads(response.content)
 
         for r in jsonResponse:      
@@ -69,3 +71,5 @@ def getAllProperties():
         print(f'Error: ${e}')
 
 searchNewlyImportedContacts()
+# getAllContacts()
+# getAllProperties()
