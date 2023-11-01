@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import json
+from liProfile import liProfile
 
 load_dotenv()
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
@@ -37,19 +38,23 @@ def searchNewlyImportedContacts():
 
     try:
         contacts = api_client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request)
-        print(contacts)
+        # print(contacts)
+        return contacts
     except ApiException as e: 
-        print(f'Error: ${e}')
+        print(f'Error: {e}')
+        return {f'Exception: {e}'}
 
 def getAllContacts():
     try:
         contacts = api_client.crm.contacts.get_all(properties=['firstname', 'lastname', 'jobtitle', 'company', 'lifecyclestage', 'source_channel', 'hs_lead_status', 'hublead_linkedin_profile_url'])
         
-        for contact in contacts: 
-            if(contact.properties):
-                print(contact)
+        return contacts
+        # for contact in contacts: 
+        #     if(contact.properties):
+        #         print(contact)
     except ApiException as e: 
         print(f'Error: ${e}')
+        return {f'Exception: {e}'} 
 
 def getAllProperties():
     try:
@@ -70,6 +75,21 @@ def getAllProperties():
     except Exception as e: 
         print(f'Error: ${e}')
 
-searchNewlyImportedContacts()
-# getAllContacts()
-# getAllProperties()
+def main():
+    liprofile = liProfile()
+    # contacts = searchNewlyImportedContacts()
+    contacts = getAllContacts()
+    # properties = getAllProperties()
+
+    for contact in contacts:
+        try:
+            if(contact.properties['lifecyclestage'] == 'lead' and contact.properties['source_channel'] == None and contact.properties['hs_lead_status'] == None):
+                profileName = str(contact.properties['hublead_linkedin_profile_url']).removeprefix('https://www.linkedin.com/in/')
+                # response = requests.get(url=f'http://127.0.0.1:8000/linkedin/profile/{profileName}')
+                profileData = liprofile.getLIProfileDetails(profileName)
+                print(profileData)
+        except Exception as e:
+            print(f'Exception: {e}')
+
+if __name__ == "__main__":
+        main()
