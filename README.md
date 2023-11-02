@@ -6,6 +6,7 @@ To run this application need to add a .env file with the following key/value pai
 # HUBSPOT
 API_KEY=[YOUR HUBSPOT PRIVATE APPLICATION API KEY] [Docs](https://developers.hubspot.com/docs/api/private-apps)
 API_URL=https://api.hubapi.com
+OWNER_ID=[THE OWNER ID OF THE TASK]
 
 # LINKEDIN
 LINKEDIN_USERNAME=[YOUR LINKEDIN USERNAME]
