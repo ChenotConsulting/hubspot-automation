@@ -10,17 +10,9 @@ class liProfile():
 
         # return details
         if (details == ['', '', '']):
-                raise HTTPException(status_code=404, detail="Data not found")
+            raise HTTPException(status_code=404, detail="Data not found")
         else:        
-            if(details != []):
-                # print(details)
-                return details
-            else:
-                for d in details: 
-                    # print(f'Name: {d[0]}')
-                    # print(f'Title: {d[1]}')
-                    # print(f'About: {d[2]}')
-                    return d
+            return details
                 
     app = FastAPI()
 

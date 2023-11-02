@@ -75,12 +75,13 @@ def getAllProperties():
     except Exception as e: 
         print(f'Error: ${e}')
 
+def generateLinkedInMessage():
+    # TODO: get all tasks due and generate a linkedin message for each one then send it via LinkedIn
+    print('TODO')
 
-def main():
+def updateNewlyImportedContacts():
     liprofile = liProfile()
-    # contacts = searchNewlyImportedContacts()
     contacts = getAllContacts()
-    # properties = getAllProperties()
 
     for contact in contacts:
         try:
@@ -91,5 +92,21 @@ def main():
         except Exception as e:
             print(f'Exception: {e}')
 
+def main(args):
+    print(args)
+    if args == 'Generate LinkedIn Message':
+        generateLinkedInMessage()
+    if args == 'Update newly imported contacts':
+        updateNewlyImportedContacts()
+
 if __name__ == "__main__":
-        main()
+        options = ['Generate LinkedIn Message', 'Update newly imported contacts']
+        print("Select an option:")
+        for index, option in enumerate(options):
+            print(f"{index+1}) {option}")
+
+        selection = input("Enter the number of your choice: ")
+        if selection.isdigit() and 1 <= int(selection) <= len(options):
+            selected_option = options[int(selection) - 1]
+
+        main(selected_option)
