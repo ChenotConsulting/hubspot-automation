@@ -75,6 +75,7 @@ def getAllProperties():
     except Exception as e: 
         print(f'Error: ${e}')
 
+
 def main():
     liprofile = liProfile()
     # contacts = searchNewlyImportedContacts()
@@ -85,7 +86,6 @@ def main():
         try:
             if(contact.properties['lifecyclestage'] == 'lead' and contact.properties['source_channel'] == None and contact.properties['hs_lead_status'] == None):
                 profileName = str(contact.properties['hublead_linkedin_profile_url']).removeprefix('https://www.linkedin.com/in/')
-                # response = requests.get(url=f'http://127.0.0.1:8000/linkedin/profile/{profileName}')
                 profileData = liprofile.getLIProfileDetails(profileName)
                 print(profileData)
         except Exception as e:

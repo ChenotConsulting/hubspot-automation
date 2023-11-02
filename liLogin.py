@@ -17,7 +17,10 @@ class LILogin():
   about = ''
 
   def setup_method(self):
-    self.driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument("user-data-dir=~/Library/Application Support/Google/Chrome/Default")
+    self.driver = webdriver.Chrome(options=options)
     self.vars = {}
   
   def teardown_method(self):
@@ -40,17 +43,12 @@ class LILogin():
       print(f'Error extracting data: {e}')
   
   def runLILogin(self, url):
-    self.teardown_method()
     # Load the environment variables
     load_dotenv()
     LI_USERNAME = os.getenv('LINKEDIN_USERNAME')
     LI_PASSWORD = os.getenv('LINKEDIN_PASSWORD')
 
     try:
-      chrome_options = Options()
-      chrome_options.add_argument("user-data-dir=~/Library/Application Support/Google/Chrome/Default")
-
-      self.driver = webdriver.Chrome(options=chrome_options)
       self.driver.get("https://www.linkedin.com/")
       self.driver.set_window_size(1920, 1080)
 
