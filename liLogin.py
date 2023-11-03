@@ -10,6 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
+from datetime import datetime
 
 class LILogin():
   name = ''
@@ -17,16 +18,20 @@ class LILogin():
   about = ''
 
   def setup_method(self):
+    print('Launching headless Chrome driver')
     options = webdriver.ChromeOptions()
+    # COMMENT OUT FOR TESTING AND SHOW THE BROWSER
     options.add_argument('--headless')
     options.add_argument("user-data-dir=~/Library/Application Support/Google/Chrome/Default")
     self.driver = webdriver.Chrome(options=options)
     self.vars = {}
   
   def teardown_method(self):
+    print('Closing headless Chrome driver')
     self.driver.quit()
 
   def extractData(self):
+    print('Extracting data')
     time.sleep(1)
     
     try:
@@ -36,13 +41,25 @@ class LILogin():
         self.title = self.driver.find_element(By.XPATH, "//div[contains(@class, 'text-body-medium break-words')]").text
       if(self.driver.find_elements(By.XPATH, "//section[starts-with(@id, 'ember')]//div//div//div//div//h2//span[contains(text(), 'About')]//ancestor::section[starts-with(@id, 'ember')]//div[3]//div//div//div//span[1]")):
         self.about = self.driver.find_element(By.XPATH, "//section[starts-with(@id, 'ember')]//div//div//div//div//h2//span[contains(text(), 'About')]//ancestor::section[starts-with(@id, 'ember')]//div[3]//div//div//div//span[1]").text
-      # self.driver.find_element(By.XPATH, "//button[contains(@class, 'global-nav__primary-link global-nav__primary-link-me-menu-trigger artdeco-dropdown__trigger artdeco-dropdown__trigger--placement-bottom ember-view')]").click()
-      # time.sleep(1)
-      # self.driver.find_element(By.XPATH, "//a[contains(@href, 'logout')]").click()
+
+      print(f'Data extracted for {self.name}')
     except Exception as e:
       print(f'Error extracting data: {e}')
   
-  def runLILogin(self, url):
+  def sendMessage(self, message):
+    try:
+      time.sleep(1)
+      self.driver.find_element(By.XPATH, "//button[contains(@aria-label, 'Message') and contains(@class, 'pvs-profile-actions__action')]").click()
+      time.sleep(1)
+      message_input = self.driver.find_element(By.XPATH, "//div[contains(@class, '__contenteditable')]//p")
+      message_input.send_keys(message)
+      time.sleep(1)
+      self.driver.find_element(By.XPATH, "//button[contains(@class, 'msg-form__send-button')]").click()
+    except Exception as e:
+      print(f'Error sending LinkedIn message: {e}')
+
+  def runLILogin(self, url, action, message):
+    print(f'Running LinkedIn login for URL {url}, for action: {action} at {datetime.now().isoformat()}')
     # Load the environment variables
     load_dotenv()
     LI_USERNAME = os.getenv('LINKEDIN_USERNAME')
@@ -50,7 +67,6 @@ class LILogin():
 
     try:
       self.driver.get("https://www.linkedin.com/")
-      self.driver.set_window_size(1920, 1080)
 
       if(self.driver.find_elements(By.CSS_SELECTOR, ".sign-in-form__submit-btn--full-width")):
         self.driver.find_element(By.ID, "session_key").click()
@@ -58,13 +74,20 @@ class LILogin():
         self.driver.find_element(By.ID, "session_password").click()
         self.driver.find_element(By.ID, "session_password").send_keys(LI_PASSWORD)
         self.driver.find_element(By.CSS_SELECTOR, ".sign-in-form__submit-btn--full-width").click()
+        print('Logged into LinkedIn')
+      else:
+        print('Skipped login')
         
       self.driver.get(url)
 
       if(self.driver.current_url.find('checkpoint') != -1 or self.driver.current_url.find('authwall') != -1): 
+        print('Too many attemps have been made. Please wait and try again later.')
         return 'Too many attemps have been made. Please wait and try again later.'
       else:
-        self.extractData()
+        if(action == 'profile_data'):
+          self.extractData()
+        if(action == 'send_message'):
+          self.sendMessage(message=message)
     except Exception as e:
       raise Exception(e)
 
