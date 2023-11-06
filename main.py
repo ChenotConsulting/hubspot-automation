@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import requests
 import json
+import sys
 from datetime import datetime, timedelta, timezone
 import time
 from liProfile import liProfile
@@ -354,6 +355,7 @@ class Main():
                 print(f'Exception: {e}')
 
     def main(self, args):
+        print(f'Commencing activity: {args}')
         if args == 'Generate LinkedIn Message':
             self.ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
             self.OWNER_ID = os.getenv('OWNER_ID')
@@ -372,14 +374,25 @@ class Main():
             self.updateNewlyImportedContacts()
 
 if __name__ == "__main__":
-        options = ['Generate LinkedIn Message', 'Update newly imported contacts', 'TEST Generate LinkedIn Message', 'TEST Update newly imported contacts']
-        print("Select an option:")
-        for index, option in enumerate(options):
-            print(f"{index+1}) {option}")
-
-        selection = input("Enter the number of your choice: ")
-        if selection.isdigit() and 1 <= int(selection) <= len(options):
-            selected_option = options[int(selection) - 1]
-
         m = Main()
-        m.main(args=selected_option)
+
+        if len(sys.argv) > 1:
+            if sys.argv[1] == '1':
+                m.main('Generate LinkedIn Message')
+            if sys.argv[1] == '2':
+                m.main('Update newly imported contacts')
+            if sys.argv[1] == '3':
+                m.main('TEST Generate LinkedIn Message')
+            if sys.argv[1] == '4':
+                m.main('TEST Update newly imported contacts')
+        else:
+            options = ['Generate LinkedIn Message', 'Update newly imported contacts', 'TEST Generate LinkedIn Message', 'TEST Update newly imported contacts']
+            print("Select an option:")
+            for index, option in enumerate(options):
+                print(f"{index+1}) {option}")
+
+            selection = input("Enter the number of your choice: ")
+            if selection.isdigit() and 1 <= int(selection) <= len(options):
+                selected_option = options[int(selection) - 1]
+      
+            m.main(args=selected_option)
