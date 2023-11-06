@@ -1,0 +1,5 @@
+fastapi==0.104.1
+hubspot_api_client==8.1.1
+python-dotenv==1.0.0
+Requests==2.31.0
+selenium==4.15.2
