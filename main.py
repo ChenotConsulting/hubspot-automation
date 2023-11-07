@@ -357,11 +357,11 @@ class Main():
         if args == 'Generate LinkedIn Message':
             self.ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
             self.OWNER_ID = os.getenv('OWNER_ID')
-            self.generateLinkedInMessage('prod')
+            self.generateLinkedInMessage()
         if args == 'Update newly imported contacts':
             self.ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
             self.OWNER_ID = os.getenv('OWNER_ID')
-            self.updateNewlyImportedContacts('prod')
+            self.updateNewlyImportedContacts()
         if args == 'TEST Generate LinkedIn Message':
             self.ACCESS_TOKEN = os.getenv('TEST_ACCESS_TOKEN')
             self.OWNER_ID = os.getenv('TEST_OWNER_ID')

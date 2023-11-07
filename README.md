@@ -1,4 +1,4 @@
-# hubspot-automation
+# HubSpot automation
 Various automation tasks for my HubSpot CRM and LinkedIn lead-gen framework. 
 
 To run this application, you need to add a .env file with the following key/value pairs.
