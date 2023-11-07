@@ -173,14 +173,14 @@ class Main():
 
             data = json.dumps({
                 "properties": {
-                    "hs_timestamp": ts,
+                    "hs_timestamp": int(ts),
                     "hs_task_status": "COMPLETED",
                 }
             })
 
             response = requests.patch(url=f'{self.API_URL}/crm/v3/objects/tasks/{task_id}', headers=headers, data=data)
             
-            if(response.status_code == 201):
+            if(response.status_code == 200):
                 print(f'Task {task_id} has been marked as completed.')
             else:
                 print(f'Task {task_id} was not completed. Status code: {response.status_code}')
@@ -217,7 +217,6 @@ class Main():
         except Exception as e:
             print(f'Exception: {e}')
 
-    # COMMENT OUT FOR TESTING IN PROD
     def generateLinkedInMessage(self):
         print(f'Starting generating LinkedInMessages at {datetime.now().isoformat()}')
         tasks_due = self.getTasksDue()
@@ -242,7 +241,6 @@ class Main():
             except Exception as e:
                 print(f'Error generating LinkedIn message for {profileData[0]}: {e}')
 
-    # TO USE FOR TESTING IN PROD ONLY
     def testGenerateLinkedInMessage(self):
         print(f'Starting generating LinkedInMessages at {datetime.now().isoformat()}')
         tasks_due = self.getTasksDue()
