@@ -68,15 +68,36 @@ class Main():
                 'Content-Type': 'application/json'
             }
 
-            response = requests.get(url=f'{self.API_URL}/crm/v3/objects/tasks?limit=100&properties=hs_timestamp,hs_task_status,hs_queue_membership_ids', headers=headers)
-            jsonResponse = json.loads(response.content)
-            tasks_due = []
+            data = {
+                'filterGroups': [
+                    {
+                        'filters': [
+                            {
+                                'propertyName': 'hs_task_status',
+                                'operator': 'EQ',
+                                'value': 'NOT_STARTED',
+                            },
+                            {
+                                'propertyName': 'hs_queue_membership_ids',
+                                'operator': 'EQ',
+                                'value': '18772971',
+                            },
+                            {
+                                'propertyName': 'hs_timestamp',
+                                'operator': 'LT',
+                                'value': int(time.mktime(datetime.now().timetuple()) * 1000),
+                            }
+                        ],
+                    },
+                ],
+                "sorts": [""],
+                "properties": [""],
+                "limit" : "100"
+            }
 
-            for resp in jsonResponse['results']:
-                if(resp['properties']['hs_queue_membership_ids'] == '18772971' and resp['properties']['hs_task_status'] == 'NOT_STARTED'):
-                    task_due_date = datetime.strptime(resp['properties']['hs_timestamp'], '%Y-%m-%dT%H:%M:%SZ')
-                    if(task_due_date <= datetime.now()):
-                        tasks_due.append(resp)
+            response = requests.post(url=f'{self.API_URL}/crm/v3/objects/tasks/search', headers=headers, json=data)
+            jsonResponse = json.loads(response.content)
+            tasks_due = [resp for resp in jsonResponse['results']]
                     
             return tasks_due
         except Exception as e: 
@@ -220,6 +241,7 @@ class Main():
     def generateLinkedInMessage(self):
         print(f'Starting generating LinkedInMessages at {datetime.now().isoformat()}')
         tasks_due = self.getTasksDue()
+        print(f'{len(tasks_due)} tasks found.')
 
         for task in tasks_due:
             association = self.getTaskAssociation(task['id'])
