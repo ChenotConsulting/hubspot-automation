@@ -10,15 +10,11 @@ from hubspot.crm.associations.v4 import BatchInputPublicFetchAssociationsBatchRe
 
 class Contact():
     load_dotenv()
-    ENV = ''
-    ACCESS_TOKEN = ''
-    OWNER_ID = ''
-    API_URL = os.getenv('HUBSPOT_API_URL')
-    hubspotTask = None
 
     def __init__(self, env):
         ENV = env
         self.hubspotTask = Task(env)
+        self.API_URL = os.getenv('HUBSPOT_API_URL')
 
         if ENV == 'prod':
             self.ACCESS_TOKEN = os.getenv('HUBSPOT_ACCESS_TOKEN')

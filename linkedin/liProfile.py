@@ -1,4 +1,4 @@
-from liLogin import LILogin
+from linkedin.liLogin import LILogin
 from fastapi import FastAPI, HTTPException
 from datetime import datetime
 

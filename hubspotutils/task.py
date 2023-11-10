@@ -2,23 +2,20 @@ from time import mktime
 import requests
 import json
 import os
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 class Task():
     load_dotenv()
-    ENV = ''
-    ACCESS_TOKEN = ''
-    OWNER_ID = ''
-    API_URL = os.getenv('HUBSPOT_API_URL')
 
     def __init__(self, env):
-        ENV = env
+        self.ENV = env
+        self.API_URL = os.getenv('HUBSPOT_API_URL')
 
-        if ENV == 'prod':
+        if env == 'prod':
             self.ACCESS_TOKEN = os.getenv('HUBSPOT_ACCESS_TOKEN')
             self.OWNER_ID = os.getenv('HUBSPOT_OWNER_ID')
-        if ENV == 'test':
+        if env == 'test':
             self.ACCESS_TOKEN = os.getenv('TEST_HUBSPOT_ACCESS_TOKEN')
             self.OWNER_ID = os.getenv('TEST_HUBSPOT_OWNER_ID')
     
@@ -110,7 +107,7 @@ class Task():
             }
 
             now = datetime.now()
-            ts = time.mktime(now.timetuple()) * 1000
+            ts = mktime(now.timetuple()) * 1000
 
             data = json.dumps({
                 "properties": {

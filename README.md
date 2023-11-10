@@ -16,6 +16,9 @@ LINKEDIN_PASSWORD=[YOUR LINKEDIN PASSWORD]
 
 # OPENAI
 OPENAI_API_KEY=[YOUR OPENAI API KEY]
+
+# ZENROWS
+ZEN_ROWS_API_KEY=[YOUR ZENROWS API KEY] # https://app.zenrows.com/builder
 ```
 
 Once the variables are set up, you can run the application with ```python3 main.py X e.g. python3 main.py 4``` where `X` is:

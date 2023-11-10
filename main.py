@@ -1,16 +1,11 @@
 import sys
 from datetime import datetime
-from liProfile import liProfile
+from linkedin.liProfile import liProfile
 from hubspotutils.contact import Contact
 from hubspotutils.task import Task
 from ai.openai import OpenAI
 
 class Main():
-    ENV = ''
-    hubspotTask = None
-    hubspotContact = None
-    openai = None
-
     def __init__(self, env):
         self.ENV = env
         self.hubspotTask = Task(env)
@@ -41,6 +36,8 @@ class Main():
                     print(f'Could not send LinkedIn message for {profileData[0]}')
             except Exception as e:
                 print(f'Error generating LinkedIn message for {profileData[0]}: {e}')
+
+        print(f'Completed sending {len(tasks_due)} messages at {datetime.now().isoformat()}')
 
     def testGenerateLinkedInMessage(self):
         print(f'Starting generating LinkedInMessages at {datetime.now().isoformat()}')

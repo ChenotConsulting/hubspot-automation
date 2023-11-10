@@ -5,7 +5,6 @@ from datetime import datetime
 
 class OpenAI():
     load_dotenv()
-    ENV = ''
 
     def __init__(self, env):
         self.ENV = env
