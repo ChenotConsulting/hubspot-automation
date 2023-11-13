@@ -3,6 +3,7 @@ from datetime import datetime
 from linkedin.liProfile import liProfile
 from hubspotutils.contact import Contact
 from hubspotutils.task import Task
+from database.mongodb import MongoDB
 from ai.openai import OpenAI
 
 class Main():
@@ -82,6 +83,9 @@ class Main():
             self.testGenerateLinkedInMessage()
         if args == 'TEST Update newly imported contacts':
             self.updateNewlyImportedContacts()
+        if args == 'TEST MongoDB':
+            mongo = MongoDB()
+            mongo.testConnection()
 
 if __name__ == "__main__":
     arg = ''
@@ -100,7 +104,7 @@ if __name__ == "__main__":
         if sys.argv[1] == '3' or sys.argv[1] == '4':
             env = 'test'
     else:
-        options = ['Generate LinkedIn Message', 'Update newly imported contacts', 'TEST Generate LinkedIn Message', 'TEST Update newly imported contacts']
+        options = ['Generate LinkedIn Message', 'Update newly imported contacts', 'TEST Generate LinkedIn Message', 'TEST Update newly imported contacts', 'TEST MongoDB']
         print("Select an option:")
         for index, option in enumerate(options):
             print(f"{index+1}) {option}")

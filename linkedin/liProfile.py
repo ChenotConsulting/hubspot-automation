@@ -21,8 +21,10 @@ class liProfile():
         try:
             liLogin = LILogin()
             liLogin.setup_method()    
-            liLogin.runLILogin(url=f'https://linkedin.com/in/{profileLink}', action=action, message=message)
-            liLogin.teardown_method()
+            if liLogin.runLILogin(url=f'https://linkedin.com/in/{profileLink}', action=action, message=message):
+                liLogin.teardown_method()
+            else: 
+                return False
 
             return True
         except Exception as e:

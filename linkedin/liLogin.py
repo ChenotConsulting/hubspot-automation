@@ -38,10 +38,16 @@ class LILogin():
     try:
       if(self.driver.find_elements(By.XPATH, "//h1[contains(@class, 'text-heading-xlarge inline t-24 v-align-middle break-words')]")):
         self.name = self.driver.find_element(By.XPATH, "//h1[contains(@class, 'text-heading-xlarge inline t-24 v-align-middle break-words')]").text
+      else:
+        self.name = ''
       if(self.driver.find_elements(By.XPATH, "//div[contains(@class, 'text-body-medium break-words')]")):
         self.title = self.driver.find_element(By.XPATH, "//div[contains(@class, 'text-body-medium break-words')]").text
+      else: 
+        self.title = ''
       if(self.driver.find_elements(By.XPATH, "//section[starts-with(@id, 'ember')]//div//div//div//div//h2//span[contains(text(), 'About')]//ancestor::section[starts-with(@id, 'ember')]//div[3]//div//div//div//span[1]")):
         self.about = self.driver.find_element(By.XPATH, "//section[starts-with(@id, 'ember')]//div//div//div//div//h2//span[contains(text(), 'About')]//ancestor::section[starts-with(@id, 'ember')]//div[3]//div//div//div//span[1]").text
+      else:
+        self.about = ''
 
       print(f'Data extracted for {self.name}')
     except Exception as e:
@@ -83,14 +89,15 @@ class LILogin():
 
       if(self.driver.current_url.find('checkpoint') != -1 or self.driver.current_url.find('authwall') != -1): 
         print('Too many attemps have been made. Please wait and try again later.')
-        return 'Too many attemps have been made. Please wait and try again later.'
+        return False
       else:
         if(action == 'profile_data'):
           self.extractData()
+          return [self.name, self.title, self.about]
         if(action == 'send_message'):
           self.sendMessage(message=message)
     except Exception as e:
       raise Exception(e)
 
-    return [self.name, self.title, self.about]
+    
   
