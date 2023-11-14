@@ -61,11 +61,14 @@ class Contact():
 
                 if(response.status_code == 204):
                     self.hubspotTask.createLinkedInMessageTask(vid)
+                    return True
                 else: 
-                    print(f'Could not updated contact {contact.properties["firstname"]} {contact.properties["lastname"]} with status code: {response.status_code}: \n{response.content}')
+                    print(f'Could not update contact {contact.properties["firstname"]} {contact.properties["lastname"]} with status code: {response.status_code}: \n{response.content}')
                     
         except Exception as e:
             print(f'Exception: {e}')
+
+        return False
 
     def getContactLinkedInURL(self, vid):
         print(f'Getting contact {vid} LinkedIn URL')

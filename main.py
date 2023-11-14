@@ -67,11 +67,13 @@ class Main():
     def updateNewlyImportedContacts(self):
         print(f'Updating newly imported contacts at {datetime.now().isoformat()}')
         contacts = self.hubspotContact.getAllContacts()
+        contacts_updated = 0
 
         for contact in contacts:
-            self.hubspotContact.updateContactProperties(contact)
+            if self.hubspotContact.updateContactProperties(contact):
+                contacts_updated += 1
 
-        print(f'Finished updating {len(contacts)} contacts at {datetime.now().isoformat()}')
+        print(f'Finished updating {contacts_updated} of {len(contacts)} contacts at {datetime.now().isoformat()}')
 
     def main(self, args):
         print(f'Commencing activity: {args}')
