@@ -89,6 +89,7 @@ class LILogin():
           return [self.name, self.title, self.about]
         if(action == 'send_message'):
           self.sendMessage(message=message)
+          return True
     except Exception as e:
       raise Exception(e)
 
