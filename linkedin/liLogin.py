@@ -7,10 +7,6 @@ from selenium.webdriver.common.by import By
 from datetime import datetime
 
 class LILogin():
-  # name = ''
-  # title = ''
-  # about = ''
-
   def setup_method(self):
     print('Launching headless Chrome driver')
     options = webdriver.ChromeOptions()
