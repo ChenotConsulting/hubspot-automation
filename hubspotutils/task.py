@@ -136,7 +136,7 @@ class Task():
 
             now = datetime.now()
             target_date = now + timedelta(days=2)
-            target_datetime = target_date.replace(hour=9, minute=0, second=0, microsecond=0)
+            target_datetime = target_date.replace(hour=8, minute=0, second=0, microsecond=0)
             ts = mktime(target_datetime.timetuple()) * 1000
 
             data=json.dumps({
